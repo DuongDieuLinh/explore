@@ -1,0 +1,116 @@
+use DDLinh;
+create table customers(
+ID int not null auto_increment primary key,
+name varchar(50),
+email varchar(50),
+address varchar(100),
+city varchar(50)
+
+);
+insert into customers (name , email , address , city ) 
+values ('Nguyễn Văn A', 'nva@gmail.com', '123 Đường A', 'Hà Nội'),
+	('Trần Thị B', 'ttb@yahoo.com', '456 Đường B', 'Hồ Chí Minh'),
+	('Phạm Văn C', 'pvc@gmail.com', '789 Đường C', 'Đà Nẵng'),
+	('Lê Thị D', 'ltd@yahoo.com', '1011 Đường D', 'Hải Phòng');
+    select * from customers ;
+create table productsX (
+ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+name VARCHAR(50) NOT NULL ,
+price INT NOT NULL,
+category VARCHAR(50) NOT NULL,
+stock_quantity INT NOT NULL
+);
+insert into productsX(ID , name , price , category , stock_quantity)
+values ('01','iPhone 12', 20000000, 'Điện thoại di động', 50),
+	('02','Samsung Galaxy S21', 18000000, 'Điện thoại di động', 30),
+	('03','MacBook Air', 30000000, 'Laptop', 20),
+	('04','Dell XPS 13', 28000000, 'Laptop', 10);
+select * from productsX ;
+ create table orders2(
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+customer_name VARCHAR(50) NOT NULL,
+order_date DATE NOT NULL,
+total INT NOT NULL,
+status VARCHAR(50) NOT NULL
+ );
+ 
+ select orders2.id , customers.name
+from customers inner join orders2
+on customers.id = orders2.id
+where total.orders2 > 5 ;
+
+
+ insert into orders ( ID , customer_name , order_date , total , status)
+ values ('01','Nguyễn Văn A', '2022-01-01', 15000000, 'Đang xử lý'),
+	('02','Trần Thị B', '2022-01-05', 10000000, 'Đã giao hàng'),
+	('03','Phạm Văn C', '2022-02-10', 20000000, 'Đang giao hàng'),
+	('04','Lê Thị D', '2022-03-15', 5000000, 'Đã giao hàng');
+select * from orders ;
+select * from orders where total is null;
+/*1. Tìm tất cả các khách hàng có địa chỉ ở thành phố "Hà Nội" */
+select * from customers 
+where city = 'Hà Nội';
+/*2. Tìm tất cả các sản phẩm có giá bán lớn hơn 1000 đồng. */
+select * from productsX
+where  price > 1000 ;
+/*3.Tìm tất cả các đơn đặt hàng được đặt trong năm 2022.*/
+select * from orders
+where year(order_date) = '2022-01-01' and year(order_date)='2022-12-31';
+/*4.Tìm tất cả các đơn đặt hàng có trạng thái "Đã giao hàng".*/
+select * from orders
+where status ='Đã giao hàng';
+/*Tìm tất cả các sản phẩm thuộc danh mục "Điện thoại di động".*/
+select * from  productsX
+where category ='Điện thoại di động';
+/*Tìm tất cả các khách hàng có địa chỉ email kết thúc bằng "@gmail.com".*/
+select * from customers
+where email like "%@gmail.com%";
+/*Tìm tất cả các sản phẩm có tên chứa từ "iPhone".*/
+select * from productsX
+where name like "iPhone";
+
+/*Tìm tất cả các sản phẩm có giá bán lớn hơn 1000 đồng và số lượng tồn kho ít hơn 50.*/
+select *from productsX , orders
+where stock_quantity <50 and total >1000 ; 
+/*Tìm tất cả các đơn đặt hàng có giá trị đơn hàng lớn hơn 5000 đồng.*/
+select * from productsX
+where price >5000;
+/*Tìm tất cả các đơn đặt hàng được đặt bởi khách hàng có tên là "Nguyễn Văn A".*/
+select * from customers , orders
+where name like 'Nguyễn Văn A' and customer_name like 'Nguyễn Văn A';
+select * from customers limit 2,5 ;
+select max(price) from productsX;
+select sum(price) from productsX;
+desc productsX;
+/*tính trung bình */
+/*select avg(price) from productsX where ; */
+
+create table tintuc(
+id int auto_increment primary key,
+name varchar(40)
+);
+insert into tintuc (name) values ('the thao' ) , ('kinh te'),('giaoduc');
+select * from tintuc;
+create table posts (
+id int auto_increment primary key,
+name varchar(60),
+content text,
+created_at date,
+catelogy_id int
+);
+insert into posts ( name ,content ,  created_at ,catelogy_id)
+values (  'abc' , ' 32' , '2023-03-12' , '12') , 
+	 ( 'xyx' , '34' , '2023-04-23' , '23');
+select * from posts;
+/*desc post;*/
+select * from posts inner join tintuc on posts.catelogy_id = catelogy_id;
+select * from posts join  tintuc on posts.catelogy_id = catelogy_id 
+where year(created_at)='2023'
+and tintuc.name = 'the thao'; 
+select * from posts left join tintuc on posts.catelogy_id = catelogy_id;
+select * from posts right join tintuc on posts.catelogy_id = catelogy_id;
+select catelogy_id , count(*) from posts group by catelogy_id ;
+select catelogy_id , name , count(*) from catelogy
+join posts on posts.catelogy_id = catelogy_id
+group by  catelogy_id;
+
